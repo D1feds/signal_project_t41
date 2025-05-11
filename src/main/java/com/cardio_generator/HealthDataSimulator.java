@@ -11,7 +11,7 @@ import com.cardio_generator.generators.BloodSaturationDataGenerator;
 import com.cardio_generator.generators.BloodLevelsDataGenerator;
 import com.cardio_generator.generators.ECGDataGenerator;
 import com.cardio_generator.outputs.ConsoleOutputStrategy;
-import com.cardio_generator.outputs.fileOutputStrategy;
+import com.cardio_generator.outputs.FileOutputStrategy;
 import com.cardio_generator.outputs.OutputStrategy;
 import com.cardio_generator.outputs.TcpOutputStrategy;
 import com.cardio_generator.outputs.WebSocketOutputStrategy;
@@ -25,6 +25,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Simulates health data for a configurable number of patients and outputs the data
+ * using {@link ECGDataGenerator}, {@link BloodSaturationDataGenerator}, {@link BloodPressureDataGenerator},
+ * {@link BloodLevelsDataGenerator}, {@link AlertGenerator}.
+ * It parses command-line arguments to customize the simulation parameters,
+ * initializes patient data generators, and schedules periodic data generation tasks.
+ * Also has a functionality to print generated data.
+ */
 public class HealthDataSimulator {
 
     private static int patientCount = 50; // Default number of patients
@@ -43,7 +51,15 @@ public class HealthDataSimulator {
 
         scheduleTasksForPatients(patientIds);
     }
-
+    /**
+     * Parses the command-line arguments provided to the application.
+     * This method configures the simulation parameters such as patient count
+     * and output strategy based on the arguments.
+     *
+     * @param args An array of strings from the command-line arguments.
+     * @throws IOException if an I/O error occurs during reading file output
+     * when the "file" output is specified and the directory does not exist.
+     */
     private static void parseArguments(String[] args) throws IOException {
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
@@ -72,7 +88,7 @@ public class HealthDataSimulator {
                             if (!Files.exists(outputPath)) {
                                 Files.createDirectories(outputPath);
                             }
-                            outputStrategy = new fileOutputStrategy(baseDirectory);
+                            outputStrategy = new FileOutputStrategy(baseDirectory);
                         } else if (outputArg.startsWith("websocket:")) {
                             try {
                                 int port = Integer.parseInt(outputArg.substring(10));
@@ -104,7 +120,9 @@ public class HealthDataSimulator {
             }
         }
     }
-
+    /**
+     * Prints help information to the console, detailing command-line usage and options.
+     */
     private static void printHelp() {
         System.out.println("Usage: java HealthDataSimulator [options]");
         System.out.println("Options:");
@@ -122,6 +140,12 @@ public class HealthDataSimulator {
                 "  This command simulates data for 100 patients and sends the output to WebSocket clients connected to port 8080.");
     }
 
+    /**
+     * Initializes a list of unique patient identifiers.
+     *
+     * @param patientCount The total number of patients for which to generate IDs.
+     * @return A {@code List<Integer>} containing the patient IDs.
+     */
     private static List<Integer> initializePatientIds(int patientCount) {
         List<Integer> patientIds = new ArrayList<>();
         for (int i = 1; i <= patientCount; i++) {
@@ -129,7 +153,13 @@ public class HealthDataSimulator {
         }
         return patientIds;
     }
-
+    /**
+     * Schedules various data generation tasks for each patient ID in the provided list.
+     * This method initializes different data generators and schedules them to run periodically for each patient.
+     *
+     * @param patientIds A {@code List<Integer>} containing the patient IDs for whom
+     * data generation tasks will be scheduled.
+     */
     private static void scheduleTasksForPatients(List<Integer> patientIds) {
         ECGDataGenerator ecgDataGenerator = new ECGDataGenerator(patientCount);
         BloodSaturationDataGenerator bloodSaturationDataGenerator = new BloodSaturationDataGenerator(patientCount);
@@ -145,7 +175,13 @@ public class HealthDataSimulator {
             scheduleTask(() -> alertGenerator.generate(patientId, outputStrategy), 20, TimeUnit.SECONDS);
         }
     }
-
+    /**
+     * Schedules a given task to run at a fixed rate after an initial random delay.
+     *
+     * @param task The {@code Runnable} task to be executed periodically.
+     * @param period The period between successive executions of the task.
+     * @param timeUnit The {@code TimeUnit} for the period parameter.
+     */
     private static void scheduleTask(Runnable task, long period, TimeUnit timeUnit) {
         scheduler.scheduleAtFixedRate(task, random.nextInt(5), period, timeUnit);
     }
