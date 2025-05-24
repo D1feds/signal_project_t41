@@ -3,6 +3,9 @@ package com.alerts;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data
  * and generating alerts when certain predefined conditions are met. This class
@@ -11,6 +14,7 @@ import com.data_management.Patient;
  */
 public class AlertGenerator {
     private DataStorage dataStorage;
+    private ArrayList<Alert> triggeredAlerts;
 
     /**
      * Constructs an {@code AlertGenerator} with a specified {@code DataStorage}.
@@ -22,6 +26,8 @@ public class AlertGenerator {
      */
     public AlertGenerator(DataStorage dataStorage) {
         this.dataStorage = dataStorage;
+        this.triggeredAlerts = new ArrayList<>();
+
     }
 
     /**
@@ -34,8 +40,7 @@ public class AlertGenerator {
      *
      * @param patient the patient data to evaluate for alert conditions
      */
-    public void evaluateData(Patient patient) {
-        // Implementation goes here
+    public void evaluateData(Patient patient) throws IOException {
     }
 
     /**
@@ -47,6 +52,7 @@ public class AlertGenerator {
      * @param alert the alert object containing details about the alert condition
      */
     private void triggerAlert(Alert alert) {
-        // Implementation might involve logging the alert or notifying staff
+        System.out.println("Patient  " + alert.getPatientId() +" has the following alrt:  " +alert.getCondition() + ". Time:  " + alert.getTimestamp());
+        triggeredAlerts.add(alert);
     }
 }
