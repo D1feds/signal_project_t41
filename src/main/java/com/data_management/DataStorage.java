@@ -1,5 +1,6 @@
 package com.data_management;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.alerts.AlertGenerator;
  */
 public class DataStorage {
     private Map<Integer, Patient> patientMap; // Stores patient objects indexed by their unique patient ID.
+    private static volatile DataStorage instance;
 
     /**
      * Constructs a new instance of DataStorage, initializing the underlying storage
@@ -21,6 +23,17 @@ public class DataStorage {
      */
     public DataStorage() {
         this.patientMap = new HashMap<>();
+    }
+
+    public static DataStorage getInstance() {
+        if (instance == null) {
+            synchronized (DataStorage.class) {
+                if (instance == null) {
+                    instance = new DataStorage();
+                }
+            }
+        }
+        return instance;
     }
 
     /**
@@ -75,6 +88,14 @@ public class DataStorage {
         return new ArrayList<>(patientMap.values());
     }
 
+
+    public Patient getPatient(int patientId) {
+        return patientMap.get(patientId);
+    }
+
+    public List<PatientRecord> getPatientRecords(int patientId) {
+        return patientMap.get(patientId).getPatientRecords();
+    }
     /**
      * The main method for the DataStorage class.
      * Initializes the system, reads data into storage, and continuously monitors
@@ -82,7 +103,7 @@ public class DataStorage {
      * 
      * @param args command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // DataReader is not defined in this scope, should be initialized appropriately.
         // DataReader reader = new SomeDataReaderImplementation("path/to/data");
         DataStorage storage = new DataStorage();

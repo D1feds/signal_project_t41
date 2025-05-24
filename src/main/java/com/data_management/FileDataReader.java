@@ -13,7 +13,7 @@ import javax.xml.crypto.Data;
  */
 public class FileDataReader implements DataReader {
 
-    private  String outputDirectory;
+    private String outputDirectory;
 
     /**
      * Constructs a FileDataReader with the specified output directory.
@@ -37,6 +37,7 @@ public class FileDataReader implements DataReader {
         if (!directory.exists() || !directory.isDirectory()) {
             throw new IllegalArgumentException("The specified output directory does not exist or is not a directory.");
         }
+
         DataStorage storage = DataStorage.getInstance();
         File[] files = directory.listFiles();
         if (files != null) {
