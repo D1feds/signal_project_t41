@@ -76,4 +76,13 @@ public class FileDataReader implements DataReader {
         }
     }
 
+    @Override
+    public void start() {
+        //no need in file read
+    }
+
+    @Override
+    public void stop() {
+        //no need in file read
+    }
 }
