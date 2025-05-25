@@ -1,0 +1,1 @@
+Tests that we provide do not cover classes that do no require testing due to their simplicity (factories, decorators), and classes that were present in original version of repository. 
