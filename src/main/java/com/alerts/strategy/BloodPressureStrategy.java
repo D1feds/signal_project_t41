@@ -18,25 +18,34 @@ public class BloodPressureStrategy implements AlertStrategy{
         BloodPressureAlertFactory factory = new BloodPressureAlertFactory();
         String patientId = String.valueOf(patient.getPatientId());
 
-        List<PatientRecord> record = patient.getRecords(0, Integer.MAX_VALUE, condition);
+        List<PatientRecord> record = patient.getRecords(0, Long.MAX_VALUE, condition);
         for (int i = 1; i < record.size(); i++) {
-            if(record.get(i).getMeasurementValue() - record.get(i-1).getMeasurementValue() <= -threshold) {
-                return factory.createAlert(patientId, "Increase in patient's" + condition, timestamp);
+            String conditionMessage = condition;
+            if(record.get(i).getMeasurementValue() - record.get(i-1).getMeasurementValue() >= threshold) {
+                if (condition.equals("SystolicPressure")) {
+                    conditionMessage = "Systolic Pressure";
+                } else if (condition.equals("DiastolicPressure")) {
+                    conditionMessage = "Diastolic Pressure";
+                }
+                return factory.createAlert(patientId, "Increase in patient's " + conditionMessage, timestamp);
             }
-            else if(record.get(i).getMeasurementValue() - record.get(i-1).getMeasurementValue() >= threshold) {
-                return factory.createAlert(patientId, "Decrease in patient's" + condition, timestamp);
+            else if(record.get(i).getMeasurementValue() - record.get(i-1).getMeasurementValue() <= -threshold) {
+                if (condition.equals("SystolicPressure")) {
+                    conditionMessage = "Systolic Pressure";
+                } else if (condition.equals("DiastolicPressure")) {
+                    conditionMessage = "Diastolic Pressure";
+                }
+                return factory.createAlert(patientId, "Decrease in patient's " + conditionMessage, timestamp);
             }
-
         }
         return null;
     }
 
     public Alert checkAlert(Patient patient, String condition, long timestamp) {
-
-
         BloodPressureAlertFactory factory = new BloodPressureAlertFactory();
-
         String patientId = String.valueOf(patient.getPatientId());
+
+
         Alert alertSysTrend = trend(patient, "SystolicPressure", timestamp);
         Alert alertDiaTrend = trend(patient, "DiastolicPressure", timestamp);
 
@@ -47,26 +56,28 @@ public class BloodPressureStrategy implements AlertStrategy{
             return alertDiaTrend;
         }
 
-        List<PatientRecord> record1 = patient.getRecords(0, Integer.MAX_VALUE, "SystolicPressure");
-        List<PatientRecord> record2 = patient.getRecords(0, Integer.MAX_VALUE, "DiastolicPressure");
+        List<PatientRecord> record1 = patient.getRecords(0, Long.MAX_VALUE, "SystolicPressure");
+        List<PatientRecord> record2 = patient.getRecords(0, Long.MAX_VALUE, "DiastolicPressure");
 
         if(record1.isEmpty() && record2.isEmpty()){
             return null;
         }
 
-        if (record1.get(record1.size()-1).getRecordType().equals("SystolicPressure")) {
+
+        if (condition.equals("SystolicPressure") && !record1.isEmpty()) {
             if (record1.get(record1.size()-1).getMeasurementValue() < systolicBelow) {
-                factory.createAlert(patientId, "SYSTOLIC PRESSURE TOO LOW", timestamp);
+                return factory.createAlert(patientId, "SYSTOLIC PRESSURE TOO LOW", timestamp);
             } else if (record1.get(record1.size()-1).getMeasurementValue() > systolicThreshold) {
-                factory.createAlert(patientId, "SYSTOLIC PRESSURE TOO HIGH", timestamp);
+                return factory.createAlert(patientId, "SYSTOLIC PRESSURE TOO HIGH", timestamp);
             }
         }
-        else if (record1.get(record1.size()-1).getRecordType().equals("DiastolicPressure")) {
-            if (record2.get(record1.size()-1).getMeasurementValue() < diastolicBelow) {
-                factory.createAlert(patientId, "DIASTOLIC PRESSURE TOO LOW", timestamp);
+
+        else if (condition.equals("DiastolicPressure") && !record2.isEmpty()) {
+            if (record2.get(record2.size()-1).getMeasurementValue() < diastolicBelow) {
+                return factory.createAlert(patientId, "DIASTOLIC PRESSURE TOO LOW", timestamp);
             }
-            else if (record2.get(record1.size()-1).getMeasurementValue() > diastolicThreshold) {
-                factory.createAlert(patientId, "DIASTOLIC PRESSURE TOO HIGH", timestamp);
+            else if (record2.get(record2.size()-1).getMeasurementValue() > diastolicThreshold) {
+                return factory.createAlert(patientId, "DIASTOLIC PRESSURE TOO HIGH", timestamp);
             }
         }
 

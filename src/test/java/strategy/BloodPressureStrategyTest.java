@@ -48,7 +48,7 @@ class BloodPressureStrategyTest {
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
-         assertEquals("Increase in patient's blood pressure", alert.getCondition());
+         assertEquals("Increase in patient's Systolic Pressure", alert.getCondition());
          assertEquals(TIMESTAMP, alert.getTimestamp());
     }
 
@@ -64,7 +64,7 @@ class BloodPressureStrategyTest {
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
-         assertEquals("Decrease in patient's blood pressure", alert.getCondition());
+         assertEquals("Decrease in patient's Systolic Pressure", alert.getCondition());
          assertEquals(TIMESTAMP, alert.getTimestamp());
     }
 
@@ -86,7 +86,7 @@ class BloodPressureStrategyTest {
     void testAlertWithSystolicPressureTooHigh() {
 
         for (int i = 0; i < 5; i++) {
-            patient.addRecord(SYSTOLIC_THRESHOLD_HIGH + 10, "BloodPressure", TIMESTAMP - i * 1000);
+            patient.addRecord(SYSTOLIC_THRESHOLD_HIGH + 10, SYSTOLIC_CONDITION, TIMESTAMP - i * 1000);
         }
 
 
@@ -102,7 +102,7 @@ class BloodPressureStrategyTest {
     void testAlertWithSystolicPressureTooLow() {
 
         for (int i = 0; i < 5; i++) {
-            patient.addRecord(SYSTOLIC_THRESHOLD_LOW - 10, "BloodPressure", TIMESTAMP - i * 1000);
+            patient.addRecord(SYSTOLIC_THRESHOLD_LOW - 10, SYSTOLIC_CONDITION, TIMESTAMP - i * 1000);
         }
 
 
@@ -118,7 +118,7 @@ class BloodPressureStrategyTest {
     void testAlertWithDiastolicPressureTooHigh() {
 
         for (int i = 0; i < 5; i++) {
-            patient.addRecord(DIASTOLIC_THRESHOLD_HIGH + 10, "BloodPressure", TIMESTAMP - i * 1000);
+            patient.addRecord(DIASTOLIC_THRESHOLD_HIGH + 10, DIASTOLIC_CONDITION, TIMESTAMP - i * 1000);
         }
 
 
@@ -134,7 +134,7 @@ class BloodPressureStrategyTest {
     void testAlertWithDiastolicPressureTooLow() {
 
         for (int i = 0; i < 5; i++) {
-            patient.addRecord(DIASTOLIC_THRESHOLD_LOW - 10, "BloodPressure", TIMESTAMP - i * 1000);
+            patient.addRecord(DIASTOLIC_THRESHOLD_LOW - 10, DIASTOLIC_CONDITION, TIMESTAMP - i * 1000);
         }
 
 
@@ -149,7 +149,7 @@ class BloodPressureStrategyTest {
     @Test
     void testAlertWithNormalPressure() {
         for (int i = 0; i < 5; i++) {
-            patient.addRecord((SYSTOLIC_THRESHOLD_HIGH + SYSTOLIC_THRESHOLD_LOW) / 2, "BloodPressure", TIMESTAMP - i * 1000);
+            patient.addRecord((SYSTOLIC_THRESHOLD_HIGH + SYSTOLIC_THRESHOLD_LOW) / 2, SYSTOLIC_CONDITION, TIMESTAMP - i * 1000);
         }
 
         Alert alert = bloodPressureStrategy.checkAlert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
