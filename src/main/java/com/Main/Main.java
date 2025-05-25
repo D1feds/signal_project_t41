@@ -8,15 +8,16 @@ import com.data_management.FileDataReader;
 import com.data_management.Patient;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         if (args.length > 0 && args[0].equals("DataStorage")) {
-            DataStorage.main(new String[]{});
+            DataStorage.main(args);
         } else if (args.length > 0 && args[0].equals("DataAccess")) {
-            DataAccess.main(new String[]{});
+            DataAccess.main(args);
         }else {
-            HealthDataSimulator.main(new String[]{});
+            HealthDataSimulator.main(args);
         }
 
         AlertGenerator alertGenerator = new AlertGenerator(DataStorage.getInstance());
@@ -26,7 +27,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        FileDataReader fileDataReader = new FileDataReader("dataFolder/");
+        FileDataReader fileDataReader = new FileDataReader("/Users/d1feds/Desktop/informatica/Java/project/signal_project_t41/src/main/java/com/data");
         fileDataReader.readData(DataStorage.getInstance());
         DataStorage dataStorage = DataStorage.getInstance();
         System.out.println(dataStorage.getAllPatients().size());

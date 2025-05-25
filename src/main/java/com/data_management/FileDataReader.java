@@ -62,10 +62,10 @@ public class FileDataReader implements DataReader {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 4) {
-                    int patientId = Integer.parseInt(parts[0]);
-                    long timestamp = Long.parseLong(parts[1]);
-                    String recordType = parts[2];
-                    double measurementValue = Double.parseDouble(parts[3]);
+                    int patientId = Integer.parseInt(parts[0].split(" ")[2]);
+                    long timestamp = Long.parseLong(parts[1].split(" ")[2]);
+                    String recordType = parts[2].split(" ")[2];
+                    double measurementValue = Double.parseDouble(parts[3].split(" ")[2].replace("%", ""));
 
                     // Add the parsed data to the data storage
                     storage.addPatientData(patientId, measurementValue, recordType, timestamp);

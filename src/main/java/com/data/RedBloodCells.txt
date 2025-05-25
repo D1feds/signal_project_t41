@@ -1,0 +1,3 @@
+Patient ID: 3, Timestamp: 1748206657255, Label: RedBloodCells, Data: 5.141098010959821
+Patient ID: 6, Timestamp: 1748206657255, Label: RedBloodCells, Data: 5.111882364139177
+Patient ID: 5, Timestamp: 1748206657255, Label: RedBloodCells, Data: 5.702432972989112
