@@ -9,9 +9,12 @@ import java.util.List;
 
 public class ECGAlertStrategy implements AlertStrategy{
 
+    int THRESHOLD_HIGH = 100;
+    int THRESHOLD_LOW = 50;
 
     @Override
     public Alert checkAlert(Patient patient, String condition, long timestamp) {
+
 
 
         String patientId = String.valueOf(patient.getPatientId());
@@ -24,9 +27,6 @@ public class ECGAlertStrategy implements AlertStrategy{
         if (record.isEmpty()) {
             return null;
         }
-
-        int THRESHOLD_HIGH = 100;
-        int THRESHOLD_LOW = 50;
 
 
         if (record.get(record.size()-1).getMeasurementValue() > THRESHOLD_HIGH) {

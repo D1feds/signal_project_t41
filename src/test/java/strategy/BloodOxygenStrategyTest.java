@@ -22,7 +22,7 @@ class BloodOxygenStrategyTest {
     private static final int PATIENT_ID_INT = 123;
     private static final String CONDITION = "Saturation";
     private static final long TIMESTAMP = System.currentTimeMillis();
-    private static final int VALUE = 90;
+    private static final int VALUE = 80;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +44,7 @@ class BloodOxygenStrategyTest {
 
     @Test
     void testAlertWhenBloodOxygenNormal() {
-        patient.addRecord(VALUE + 10, CONDITION, TIMESTAMP);
+        patient.addRecord(VALUE + 20, CONDITION, TIMESTAMP);
 
 
         Alert alert = bloodOxygenStrategy.checkAlert(patient, CONDITION, TIMESTAMP);

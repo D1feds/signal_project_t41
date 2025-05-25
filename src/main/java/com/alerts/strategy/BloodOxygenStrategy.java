@@ -8,7 +8,7 @@ import com.alerts.factory.BloodOxygenAlertFactory;
 import java.util.List;
 
 public class BloodOxygenStrategy implements AlertStrategy{
-    private final int THRESHOLD = 92;
+    private final int THRESHOLD = 90;
 
 
     public Alert checkAlert(Patient patient, String condition, long timestamp) {
