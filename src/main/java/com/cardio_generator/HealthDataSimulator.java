@@ -35,10 +35,24 @@ import java.util.ArrayList;
  */
 public class HealthDataSimulator {
 
+    HealthDataSimulator instance = null;
+
     private static int patientCount = 50; // Default number of patients
     private static ScheduledExecutorService scheduler;
     private static OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy
     private static final Random random = new Random();
+
+
+    public HealthDataSimulator() {}
+
+    public HealthDataSimulator getInstance(){
+        if(instance == null){
+            instance = new HealthDataSimulator();
+        }
+        return instance;
+    }
+
+
 
     public static void main(String[] args) throws IOException {
 
