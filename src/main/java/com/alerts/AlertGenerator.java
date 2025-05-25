@@ -1,10 +1,16 @@
 package com.alerts;
 
+import com.alerts.strategy.AlertStrategy;
+import com.alerts.strategy.BloodOxygenStrategy;
+import com.alerts.strategy.BloodPressureStrategy;
+import com.alerts.strategy.ECGAlertStrategy;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
+import com.data_management.PatientRecord;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data
@@ -14,7 +20,8 @@ import java.util.ArrayList;
  */
 public class AlertGenerator {
     private DataStorage dataStorage;
-    private ArrayList<Alert> triggeredAlerts;
+    public ArrayList<Alert> triggeredAlerts;
+    public ArrayList<AlertStrategy> alertStrategies;
 
     /**
      * Constructs an {@code AlertGenerator} with a specified {@code DataStorage}.
@@ -27,9 +34,17 @@ public class AlertGenerator {
     public AlertGenerator(DataStorage dataStorage) {
         this.dataStorage = dataStorage;
         this.triggeredAlerts = new ArrayList<>();
+        this.alertStrategies = new ArrayList<>();
+        init(this.dataStorage);
 
     }
 
+    public void init(DataStorage dataStorage) {
+        this.dataStorage = dataStorage;
+        this.alertStrategies.add(new BloodPressureStrategy());
+        this.alertStrategies.add(new BloodOxygenStrategy());
+        this.alertStrategies.add(new ECGAlertStrategy());
+    }
     /**
      * Evaluates the specified patient's data to determine if any alert conditions
      * are met. If a condition is met, an alert is triggered via the
@@ -41,8 +56,15 @@ public class AlertGenerator {
      * @param patient the patient data to evaluate for alert conditions
      */
     public void evaluateData(Patient patient) throws IOException {
+        for(AlertStrategy strategy: alertStrategies){
+            List<PatientRecord> records = patient.getPatientRecords();
+            for(int i =0; i< patient.getPatientRecords().size(); i++ ){
+                PatientRecord record = records.get(i);
+                Alert alert = strategy.checkAlert(patient, record.getRecordType(), record.getTimestamp());
+                if(alert != null){ triggerAlert(alert);}
+            }
+        }
     }
-
     /**
      * Triggers an alert for the monitoring system. This method can be extended to
      * notify medical staff, log the alert, or perform other actions. The method
@@ -51,7 +73,7 @@ public class AlertGenerator {
      *
      * @param alert the alert object containing details about the alert condition
      */
-    private void triggerAlert(Alert alert) {
+    public void triggerAlert(Alert alert) {
         System.out.println("Patient  " + alert.getPatientId() +" has the following alert:  " +alert.getCondition() + ". Time:  " + alert.getTimestamp());
         triggeredAlerts.add(alert);
     }
