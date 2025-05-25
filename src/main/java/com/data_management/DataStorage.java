@@ -71,10 +71,10 @@ public class DataStorage {
      * @return a list of PatientRecord objects that fall within the specified time
      *         range
      */
-    public List<PatientRecord> getRecords(int patientId, long startTime, long endTime) {
+    public List<PatientRecord> getRecords(int patientId, long startTime, long endTime, String recordType) {
         Patient patient = patientMap.get(patientId);
         if (patient != null) {
-            return patient.getRecords(startTime, endTime);
+            return patient.getRecords(startTime, endTime, recordType);
         }
         return new ArrayList<>(); // return an empty list if no patient is found
     }
@@ -113,7 +113,7 @@ public class DataStorage {
         // reader.readData(storage);
 
         // Example of using DataStorage to retrieve and print records for a patient
-        List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);
+        List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L, "HeartRate");
         for (PatientRecord record : records) {
             System.out.println("Record for Patient ID: " + record.getPatientId() +
                     ", Type: " + record.getRecordType() +

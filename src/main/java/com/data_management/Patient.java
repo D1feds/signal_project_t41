@@ -2,6 +2,7 @@ package com.data_management;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a patient and manages their medical records.
@@ -37,6 +38,7 @@ public class Patient {
      */
     public void addRecord(double measurementValue, String recordType, long timestamp) {
         PatientRecord record = new PatientRecord(this.patientId, measurementValue, recordType, timestamp);
+        System.out.println(record.getTimestamp() + " " + recordType);
         this.patientRecords.add(record);
     }
 
@@ -48,13 +50,14 @@ public class Patient {
      * @param startTime the start of the time range, in milliseconds since UNIX
      *                  epoch
      * @param endTime   the end of the time range, in milliseconds since UNIX epoch
+     * @param recordType constriction for a specific record type
      * @return a list of PatientRecord objects that fall within the specified time
      *         range
      */
-    public List<PatientRecord> getRecords(long startTime, long endTime) {
+    public List<PatientRecord> getRecords(long startTime, long endTime, String recordType) {
         ArrayList<PatientRecord> records = new ArrayList<>();
         for (PatientRecord record : patientRecords) {
-            if (record.getTimestamp() >= startTime && record.getTimestamp() <= endTime) {
+            if (Objects.equals(record.getRecordType(), recordType) && record.getTimestamp() >= startTime && record.getTimestamp() <= endTime) {
                 records.add(record);
             }
         }
@@ -67,5 +70,4 @@ public class Patient {
     public List<PatientRecord> getPatientRecords() {
         return patientRecords;
     }
-
 }
