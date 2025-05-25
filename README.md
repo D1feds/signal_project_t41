@@ -53,6 +53,11 @@ To run with specific options (e.g., to set the patient count and choose an outpu
 java -jar target/cardio_generator-1.0-SNAPSHOT.jar --patient-count 100 --output file:./output
 ```
 
+For the file output use created dictionary data
+```sh
+java -jar target/cardio_generator-1.0-SNAPSHOT.jar --patient-count 10 --output file:./signal_project_t41/src/main/java/com/data
+```
+
 ### Supported Output Options
 
 - `console`: Directly prints the simulated data to the console.
