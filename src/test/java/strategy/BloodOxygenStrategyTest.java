@@ -34,7 +34,7 @@ class BloodOxygenStrategyTest {
     void testAlertWhenBloodOxygenBelowThreshold() {
         patient.addRecord(VALUE, CONDITION, TIMESTAMP);
 
-        Alert alert = bloodOxygenStrategy.alert(patient, CONDITION, TIMESTAMP);
+        Alert alert = bloodOxygenStrategy.checkAlert(patient, CONDITION, TIMESTAMP);
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
@@ -47,14 +47,14 @@ class BloodOxygenStrategyTest {
         patient.addRecord(VALUE + 10, CONDITION, TIMESTAMP);
 
 
-        Alert alert = bloodOxygenStrategy.alert(patient, CONDITION, TIMESTAMP);
+        Alert alert = bloodOxygenStrategy.checkAlert(patient, CONDITION, TIMESTAMP);
 
         assertNull(alert);   }
 
     @Test
     void testAlertWithNoRecords() {
 
-        Alert alert = bloodOxygenStrategy.alert(patient, CONDITION, TIMESTAMP);
+        Alert alert = bloodOxygenStrategy.checkAlert(patient, CONDITION, TIMESTAMP);
         assertNull(alert);
     }
 }

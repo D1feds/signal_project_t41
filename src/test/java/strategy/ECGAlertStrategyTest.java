@@ -29,7 +29,7 @@ class ECGAlertStrategyTest {
     void testAlertWhenECGValueAboveThreshold() {
         this.patient.addRecord(THRESHOLD + 50, CONDITION, TIMESTAMP);
         System.out.println(this.patient.getPatientRecords().size());
-        Alert alert = ecgAlertStrategy.alert(this.patient, CONDITION, TIMESTAMP);
+        Alert alert = ecgAlertStrategy.checkAlert(this.patient, CONDITION, TIMESTAMP);
 
 
          assertNotNull(alert);
@@ -44,7 +44,7 @@ class ECGAlertStrategyTest {
         patient.addRecord(THRESHOLD - 60, CONDITION, TIMESTAMP);
 
 
-        Alert alert = ecgAlertStrategy.alert(patient, CONDITION, TIMESTAMP);
+        Alert alert = ecgAlertStrategy.checkAlert(patient, CONDITION, TIMESTAMP);
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
@@ -57,7 +57,7 @@ class ECGAlertStrategyTest {
 
     @Test
     void testAlertWithNoRecords() {
-        Alert alert = ecgAlertStrategy.alert(patient, CONDITION, TIMESTAMP);
+        Alert alert = ecgAlertStrategy.checkAlert(patient, CONDITION, TIMESTAMP);
         assertNull(alert);
     }
 }

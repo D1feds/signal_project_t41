@@ -90,7 +90,7 @@ class BloodPressureStrategyTest {
         }
 
 
-        Alert alert = bloodPressureStrategy.alert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
+        Alert alert = bloodPressureStrategy.checkAlert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
@@ -106,7 +106,7 @@ class BloodPressureStrategyTest {
         }
 
 
-        Alert alert = bloodPressureStrategy.alert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
+        Alert alert = bloodPressureStrategy.checkAlert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
@@ -122,7 +122,7 @@ class BloodPressureStrategyTest {
         }
 
 
-        Alert alert = bloodPressureStrategy.alert(patient, DIASTOLIC_CONDITION, TIMESTAMP);
+        Alert alert = bloodPressureStrategy.checkAlert(patient, DIASTOLIC_CONDITION, TIMESTAMP);
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
@@ -138,7 +138,7 @@ class BloodPressureStrategyTest {
         }
 
 
-        Alert alert = bloodPressureStrategy.alert(patient, DIASTOLIC_CONDITION, TIMESTAMP);
+        Alert alert = bloodPressureStrategy.checkAlert(patient, DIASTOLIC_CONDITION, TIMESTAMP);
 
          assertNotNull(alert);
          assertEquals(PATIENT_ID, alert.getPatientId());
@@ -152,7 +152,7 @@ class BloodPressureStrategyTest {
             patient.addRecord((SYSTOLIC_THRESHOLD_HIGH + SYSTOLIC_THRESHOLD_LOW) / 2, "BloodPressure", TIMESTAMP - i * 1000);
         }
 
-        Alert alert = bloodPressureStrategy.alert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
+        Alert alert = bloodPressureStrategy.checkAlert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
 
         assertNull(alert);
     }
@@ -160,7 +160,7 @@ class BloodPressureStrategyTest {
     @Test
     void testAlertWithNoRecords() {
 
-        Alert alert = bloodPressureStrategy.alert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
+        Alert alert = bloodPressureStrategy.checkAlert(patient, SYSTOLIC_CONDITION, TIMESTAMP);
         assertNull(alert);
     }
 }

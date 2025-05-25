@@ -64,6 +64,6 @@ java -jar target/cardio_generator-1.0-SNAPSHOT.jar --patient-count 100 --output 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Project Members
+## Project Members - project group t41
 - Student ID: i6361407 (Nikita Shuvaev)
 - Student ID: i6366166 (Valentyn Prianikov)

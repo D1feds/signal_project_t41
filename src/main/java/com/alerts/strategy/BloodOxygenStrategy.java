@@ -11,7 +11,7 @@ public class BloodOxygenStrategy implements AlertStrategy{
     private final int THRESHOLD = 92;
 
 
-    public Alert alert(Patient patient, String condition, long timestamp) {
+    public Alert checkAlert(Patient patient, String condition, long timestamp) {
         String patientId = String.valueOf(patient.getPatientId());
         BloodOxygenAlertFactory factory = new BloodOxygenAlertFactory();
         List<PatientRecord> record = patient.getRecords(0, Long.MAX_VALUE, condition);

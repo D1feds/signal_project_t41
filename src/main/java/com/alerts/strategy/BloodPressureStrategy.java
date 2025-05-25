@@ -31,8 +31,7 @@ public class BloodPressureStrategy implements AlertStrategy{
         return null;
     }
 
-
-    public Alert alert(Patient patient, String condition, long timestamp) {
+    public Alert checkAlert(Patient patient, String condition, long timestamp) {
 
 
         BloodPressureAlertFactory factory = new BloodPressureAlertFactory();

@@ -11,7 +11,7 @@ public class ECGAlertStrategy implements AlertStrategy{
 
 
     @Override
-    public Alert alert(Patient patient, String condition, long timestamp) {
+    public Alert checkAlert(Patient patient, String condition, long timestamp) {
 
 
         String patientId = String.valueOf(patient.getPatientId());
