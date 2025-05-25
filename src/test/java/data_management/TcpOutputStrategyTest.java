@@ -1,5 +1,6 @@
-package com.cardio_generator.outputs;
+package data_management;
 
+import com.cardio_generator.outputs.TcpOutputStrategy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
